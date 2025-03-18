@@ -1,5 +1,5 @@
 /* 
-*  PFS lib ( web3.storage )
+*  IPFS lib ( web3.storage )
 *  @auth [ Fuu ]
 *  @creator Fuu
 *  @date 2024-05-15

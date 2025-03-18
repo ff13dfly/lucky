@@ -68,11 +68,11 @@ self.init(()=>{
             res.send("");
             
         });
+
         //http://127.0.0.1:9666/block/351668465
         app.get("/block/:slot",(req, res)=>{
             const str=req.params.slot;
             const slots=self.getSlots(str);
-            //console.log(slots);
             Block(slots,(map)=>{
                 res.send(JSON.stringify(map));
             });

@@ -6,12 +6,12 @@ const setting=require("../config");
 const config={
     entry:"sol_slot",
     stamp:"cache_stamp",
-    expire:7*24*3600,           //默认超时时间
+    expire:7*24*3600,           //slot cache expired setting
     start:{
-        done:0,         //已经缓存的数据位置
-        milestone:0,    //开始缓存的位置
-        step:10,        //每次获取slot的hash的数量
-        interval:500,   //间隔的毫秒数
+        done:0,         //slot number of cached
+        milestone:0,    //cache start slot number
+        step:10,        //number of step to cache data
+        interval:500,   //reget slot hash interval
     },
 };
 
@@ -19,6 +19,7 @@ const config={
 
 let client=null;
 const init=async ()=>{
+    //FIXME, redis did not work properly.
     //if(!setting.config.debug){
         //redis-cli -u redis://lucky:pas333@localhost:6379
         //client = redis.createClient({url:"redis://default:xxc33BBiuDx@localhost:6379"});

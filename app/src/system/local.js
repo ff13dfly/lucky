@@ -38,8 +38,4 @@ const self={
     },
 };
 
-const test={
-    
-}
-
 export default self;
