@@ -1,0 +1,8 @@
+.DS_Store
+
+build
+node_modules
+yarn.lock
+yarn-error.log
+
+deploy
