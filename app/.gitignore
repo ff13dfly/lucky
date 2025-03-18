@@ -1,0 +1,13 @@
+.DS_Store
+
+# package resource
+build
+node_modules
+yarn.lock
+yarn-error.log
+
+deploy
+chat
+
+**/*.rs.bk
+luckysig/Cargo.lock

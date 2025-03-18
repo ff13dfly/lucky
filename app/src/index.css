@@ -1,0 +1,150 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #000000;
+  color: #FFFFFF;
+}
+
+
+.modal-details .modal-header{
+  background-color: #000000;
+}
+
+.modal-dialog{
+  background-color: #512da8;
+  border-radius: 8px;
+}
+
+.modal-details .modal-content{
+  background-color: #000000;
+}
+
+.modal-header .btn-close{
+  background-color: #512da8;
+}
+
+.background-purple{
+  background-color: #512da8;
+}
+
+.pr-2{
+  margin-right: 10px;
+}
+
+.pl-1{margin-left: 5px;}
+.pl-2{margin-left: 10px;}
+
+.shake {
+  /* width: 200px;
+  height: 200px;
+  background-color: #3498db; */
+  animation: shakeAnimation 0.5s ease-in-out infinite;
+}
+.point{
+  cursor: pointer;
+}
+
+.unselect{
+  -webkit-user-select:none;
+  user-select: none;
+}
+
+@keyframes shakeAnimation {
+  0% {
+      transform: translateX(0);
+      transform: translateY(5px);
+  }
+  25% {
+      transform: translateX(-10px);
+      transform: translateY(-2px);
+  }
+  50% {
+      transform: translateX(10px);
+      transform: translateY(-2px);
+  }
+  75% {
+      transform: translateX(-10px);
+      /* transform: translateY(3px); */
+  }
+  100% {
+      transform: translateX(0);
+      /* transform: translateY(-3px); */
+  }
+}
+
+.board-preview{
+  border: 2px solid #512da8;
+  border-radius: 10px;
+}
+
+.backflip{
+  border-radius: 10px;
+}
+
+.icon{
+  width: 18px;
+  height: 18px;
+  margin: 0 auto;
+}
+
+/************************************************************/
+/*** Part Section CSS***/
+/************************************************************/
+.full {
+  background-size: cover;
+  background-position: 50% 50%;
+  background-color: #ffffff;
+  width:100%;
+}
+
+.cover{
+  border: solid 2px #71366b;
+  position: absolute;
+  margin: 0px 0px 0px 100px;
+  border-radius: 10px;
+  text-align: center;
+  color: #000000;
+  background-color: #ffffff;
+  opacity: 0.4;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+
+/************************************************************/
+/*** Hash setting CSS***/
+/************************************************************/
+.hash{
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 20px;
+  color: #3c4440;
+  letter-spacing: 4px;
+}
+
+.part{
+  height: 20px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
+  line-height: 14px;
+  color: #ffffff;
+}
+
+/************************************************************/
+/************************** Footer **************************/
+/************************************************************/
+
+
+.footer {
+  position: fixed;
+  bottom: 0px;
+  color: #fff;
+  background: #000000;
+  padding: 10px 10px 10px 10px;
+}

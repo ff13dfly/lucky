@@ -1,2 +1,3 @@
-# lucky
+# LuckySig
+
 LuckySig, make transaction lucky.
