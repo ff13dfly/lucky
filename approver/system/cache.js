@@ -2,15 +2,12 @@ const Solana=require("../lib/solana.js");
 const {output}=require("../lib/output.js");
 const tools=require("../lib/tools.js");
 
-const cfg={
-    updateInterval: 2 * 3600 * 1000,    //2h就刷新数据
-};
+const ignore=['lucky','luck'];      //ignore name list
+const gene={};                      //gene data cache
 
-const ignore=['lucky','luck'];      //默认不使用的名称
-const gene={};                      //缓存gene的数据
-
+//!important, need to check the balance and send warning
 //573VCwSmhKZanibsFseiy4BpGhQkUcxJv4Nnpcfx4tbP
-const wallet=Solana.getWallet("./lib/private.json");
+const wallet=Solana.getWallet("./lib/private_key.json");
 
 const info={
     RegistryName:async(ck)=>{
@@ -88,12 +85,9 @@ const Cache={
         const list={};
         for(let k in gene){
             const single=gene[k];
-            //console.log(single);
             if(single.close) continue;      //ignore closed gene
             list[k]=single;
         }
-
-        //list.pubkey=wallet.publicKey.toString();
         return list;
     },
 }

@@ -13,12 +13,6 @@ const self={
         }
         return false;
     },
-    getBlockHash:(block,ck)=>{
-        //1.优先从缓存中获取
-
-        //2.更新缓存，设置过期时间
-
-    },
     checkSignature:(signature,ck)=>{
         Solana.getTransaction(signature,(data)=>{
             if(data===null) return ck && ck({error:"Invalid signature."});
@@ -40,7 +34,7 @@ const self={
         });
     },
     record:async (name,signature,owner,ck)=>{
-        const wallet=Solana.getWallet("./lib/private.json");
+        const wallet=Solana.getWallet("./lib/private_key.json");
         const program=await Solana.getContract(wallet);
         const m5=MD5(name+signature).toString();
 
@@ -66,8 +60,8 @@ const Signature={
             record:"",          //record signature
             amount:0,           //LUCK token amount
         }
-        //0.参数检查
-        //0.1.name是否合法
+        //0.input check
+        //0.1. wether invalid name
         Cache.get(name,(raw)=>{
 
             if(raw===null){
@@ -75,13 +69,13 @@ const Signature={
                 return ck && ck(result);
             }
 
-            //0.2.signature是否合法
+            //0.2.wether invalid signature
             if(!Solana.validSignature(signature)){
                 result.error="Invalid signature string.";
                 return ck && ck(result);
             }
 
-            //0.3.是否为重复请求
+            //0.3.wether duplicate request
             DB.signature.exsist(signature,name,(ns)=>{
                 //console.log(`exsist?`+ns);
                 if(ns.error){
@@ -94,23 +88,23 @@ const Signature={
                     return ck && ck(result);
                 }
 
-                // 1.处理Redis的状态
-                // 1.1保存请求的signature到redis
+                // 1.Signature status update
+                // 1.1. save request signature to redis
                 DB.signature.add(signature,name,(added)=>{
                     if(added.error){
                         result.error=ns.error;
                         return ck && ck(result);
                     }
 
-                    //2.验证是否可以进行token的发放
-                    //2.1.检查签名的数据，并计算出hash
+                    //2.check token minting status
+                    //2.1.confirm signature on Solana network
                     self.checkSignature(signature,(hash,owner)=>{
                         if(hash.error){
                             result.error=hash.error;
                             return ck && ck(result);
                         }
 
-                        //2.2.根据hash计算是否可以获得空投
+                        //2.2.check win result, then mint out token
                         const tpl=Gene.convert(raw.data);
                         if(!Gene.win(hash,tpl)){
                             result.error="No winner signature.";
@@ -119,10 +113,9 @@ const Signature={
                             });
                         }
                         
-                        //2.3.请求合约的record，证明可以空投
+                        //2.3.call LuckySig program `record`, approve to win token
                         console.log(`Ready to record:`,name,signature,owner);
                         self.record(name,signature,owner,(final)=>{
-                            //console.log(final);
                             if(final.error){
                                 result.error=final.error;
                                 return DB.signature.update(signature,name,DB.status("failed"),(res)=>{
@@ -133,7 +126,7 @@ const Signature={
                             result.record=final;
                             result.win=true;
 
-                            //2.4.更新signature的记录
+                            //2.4.update signature record on server
                             DB.signature.update(signature,name,DB.status("win"),(res)=>{
                                 return ck && ck(result);
                             });

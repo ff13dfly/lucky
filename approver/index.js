@@ -8,6 +8,7 @@ const Gene=require("./system/gene.js");
 let server=null;
 const self = {
     init:(ck)=>{
+        
         return ck && ck();
     },
     cache:(ck)=>{
