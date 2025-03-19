@@ -23,7 +23,7 @@ const config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'ff13dfly', // Usually your GitHub org/user name.
-  projectName: 'luckysig', // Usually your repo name.
+  projectName: 'lucky', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -76,20 +76,28 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'My Site',
+        title: '',
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          alt: 'LuckySig Logo',
+          src: 'img/logo_2.png',
         },
         items: [
           {
+            label: 'Explorer',
+            to: 'explorer',
+            position: 'left'
+          },
+          {
+            label: 'Howto',
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Tutorial',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
-          {to: 'markdown-page', label: 'Sample', position: 'left'},
+          {
+            label: 'Blog',
+            to: '/blog',
+            position: 'left'
+          },
           {
             href: 'https://app.luckysig.fun',
             label: 'App',
