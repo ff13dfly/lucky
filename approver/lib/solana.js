@@ -96,7 +96,11 @@ const Solana={
         const ks=Keypair.fromSecretKey(secretKey);
         return new anchor.Wallet(ks)
     },
-    
+    onChange:async(pubkey,ck)=>{
+        linker.onAccountChange(pubkey, (updatedAccountInfo) => {
+            return ck && ck(updatedAccountInfo);
+        });
+    },
 }
 
 

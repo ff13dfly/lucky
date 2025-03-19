@@ -19,7 +19,7 @@ function Search(props) {
         search: [10, 2],
     }
 
-    let [account, setAccount] = useState("");
+    let [account, setAccount] = useState("G5YzePkbR7istighPC2xSjmGQh6SyVB1YcwYc5jVmvGN");
     let [list, setList] = useState([]);
     let [before, setBefore] = useState("");
     let [enable, setEnable] = useState({pre:false,next:false});

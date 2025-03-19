@@ -11,7 +11,7 @@ function Header(props) {
         row: [12],
         nav: [2,7,3]
     }
-    let [ hidden, setHidden ] = useState(false);
+    let [ hidden, setHidden ] = useState(true);
 
     const self={
         clickWhat:(ev)=>{

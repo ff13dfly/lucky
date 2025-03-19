@@ -49,6 +49,36 @@ const self={
         if(bd.length<2) return false;
         return uri.split("https://")[1].split(".")[0];
     },
+    watchdog:async ()=>{
+        const program = await Solana.getContract(wallet);
+        const target="registryName";
+        const seeds=["luck_mapping"];
+        const PDA=Solana.getPDA(seeds,program.programId);
+        output(`Start to watch on ${PDA}`);
+        Solana.onChange(PDA,(res)=>{
+            output(`Name list changed.`);
+
+            //1.get name list
+            info.RegistryName((names)=>{
+                console.log(res);
+
+                //2.filter out not cached name
+                const todo=names.data.slice(2);
+                const newer=[];
+                for(let i=0;i<todo.length;i++){
+                    if(!map[todo[i]]) newer.push(todo[i]);
+                }
+
+                //3. cache new data
+                self.getGenes(newer,(map)=>{
+                    for(let k in map){
+                        if(k==="error") continue;
+                        gene[k]=map[k];
+                    }
+                });
+            });
+        });
+    },
 };
 
 const Cache={
@@ -62,6 +92,7 @@ const Cache={
                     gene[k]=map[k];
                 }
                 output(`Fetched all gene data.`,"success");
+                self.watchdog();
                 return ck && ck();
             });
             
