@@ -3,6 +3,8 @@ import { useEffect,useState } from "react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
 
+import { FaQuestion } from "react-icons/fa";
+
 import What from "./what";
 import Portal from "./portal";
 
@@ -11,6 +13,7 @@ function Header(props) {
         row: [12],
         nav: [5,4,3],
         left:[4,8],
+        what:[6,6],
     }
     let [ hidden, setHidden ] = useState(true);
 
@@ -38,10 +41,12 @@ function Header(props) {
                             width="100%"
                         />
                     </Col>
-                    <Col className="pt-2" sm={size.left[1]} xs={size.left[1]}>
+                    <Col className="pt-1" sm={size.left[1]} xs={size.left[1]}>
                         <button className="btn btn-md btn-info" onClick={(ev)=>{
                             self.clickWhat(ev);
-                        }}>What's LuckySig?</button>
+                        }}> 
+                            <FaQuestion size={18} color={"white"}/>
+                        </button>
                     </Col>
                 </Row>
                 

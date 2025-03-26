@@ -21,7 +21,7 @@ function Search(props) {
         gene:[2,10],
     }
 
-    let [account, setAccount] = useState("G5YzePkbR7istighPC2xSjmGQh6SyVB1YcwYc5jVmvGN");
+    let [account, setAccount] = useState("");
     let [list, setList] = useState([]);
     let [before, setBefore] = useState("");
     let [enable, setEnable] = useState({pre:false,next:false});
@@ -98,14 +98,23 @@ function Search(props) {
 
     useEffect(() => {
         if (options.length === 0) self.fresh();
-        if (wallet.publicKey !== null) {
-            const acc = wallet.publicKey.toString();
-            setAccount(acc);
-            setTimeout(() => {
-                self.update(acc);
-            }, 1000);
+        console.log(window.location);
+
+        if(window.location.pathname && window.location.pathname.length!==1){
+            const input=window.location.pathname.substr(1);
+            setAccount(input);
+                setTimeout(() => {
+                    self.update(input);
+                }, 1000);
+        }else{
+            if (wallet.publicKey !== null) {
+                const acc = wallet.publicKey.toString();
+                setAccount(acc);
+                setTimeout(() => {
+                    self.update(acc);
+                }, 1000);
+            }
         }
-        
     }, [wallet.publicKey]);
 
     return (

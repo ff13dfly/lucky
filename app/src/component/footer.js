@@ -12,7 +12,7 @@ function Footer(props) {
                     Solana version 0.1.1 ( Devnet )
                 </Col>
                 <Col className="text-center content" sm={size.row[0]} xs={size.row[0]}>
-                    Copyright 2025 LuckySig
+                    Copyright 2025 LuckySig.fun
                 </Col>
             </Row>
         </Container>

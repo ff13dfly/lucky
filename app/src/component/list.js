@@ -139,7 +139,7 @@ function LuckyList(props) {
                     <Card 
                         hidden={!row.hash} 
                         style={{ width: "100%" }} 
-                        className={(row.hash && self.win(row.hash))?"background-purple point shake":"background-purple point"}
+                        className={(row.hash && self.win(row.hash))?"background-green point shake":"background-purple point"}
                     >
                         <Card.Img variant="top"  src={row.thumb} onClick={(ev)=>{
                             self.clickSignagture(row.signature,row.slot, row.hash);
