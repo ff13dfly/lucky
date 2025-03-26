@@ -119,7 +119,6 @@ function LuckyList(props) {
     useEffect(() => {
         // console.log(gene);
         if (props.data.length !== 0 && props.gene) {
-            console.log(props);
             setList(props.data);
             self.getGene(gene, (ge) => {
                 setTemplate(ge);
@@ -153,7 +152,7 @@ function LuckyList(props) {
                             </Col>
                         </Row>
                     </Card>
-                    <Card hidden={row.hash} style={{ width: "100%" }}>
+                    <Card hidden={row.hash} style={{ width: "100%",background:"#000000" }}>
                         <Card.Img variant="top" src={`${window.location.origin}/image/holding.png`} />
                         <Row className="pb-2">
                             <Col className="text-center pt-2" style={{color:"#FFFFFF"}} sm={size.row[0]} xs={size.row[0]}>

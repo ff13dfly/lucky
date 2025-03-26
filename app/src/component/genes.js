@@ -3,6 +3,8 @@ import { Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import Gene from "../lib/gene";
 
+import GeneCreate from "./create";
+
 function GeneOverview(props) {
     const size = {
         row: [12],
@@ -13,7 +15,11 @@ function GeneOverview(props) {
 
     const self={
         clickNewGene:(ev)=>{
-            
+            //console.log(props.dialog);
+            props.dialog.hide();
+            setTimeout(()=>{
+                props.dialog.show(<GeneCreate />,"Create new gene");
+            },500);
         },
         fresh:async ()=>{
             Gene.list((data)=>{

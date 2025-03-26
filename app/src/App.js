@@ -27,21 +27,20 @@ export const WalletConnectionProvider = ({ children }) => {
 };
 
 function App() {
-
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   const dialog={
-    show:(ctx,head_title)=>{
+    show:(ctx,head_title,ck_fun)=>{
       setTitle(head_title);
       setContent(ctx);
       setShow(true);
     },
     hide:()=>{
+      setShow(false);
       setTitle("");
       setContent("");
-      setShow(false);
     },
   }
 

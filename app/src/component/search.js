@@ -29,6 +29,7 @@ function Search(props) {
 
     let [options, setOptions] = useState([]);
     let [selected, setSelected] = useState(null);
+    let [input, setInput] = useState("");
     
     const wallet = useWallet();
     const limit=12;
@@ -59,7 +60,7 @@ function Search(props) {
             self.update(account);
         },
         clickGenes:()=>{
-            console.log(props.dialog);
+            //console.log(props.dialog);
             props.dialog.show(<GeneOverview dialog={props.dialog}/>,"Gene Overview")
         },
         update: async (acc,stamp,skip) => {
@@ -90,6 +91,8 @@ function Search(props) {
                     label: k,
                     image:`${window.location.origin}/image/solscan.png`,
                 });
+
+                setInput(arr.length===0?"":arr[0].label);
                 setOptions(arr);
                 setSelected(arr[0].value);
             });
@@ -133,13 +136,21 @@ function Search(props) {
                                 <Select
                                     className="text-dark"
                                     placeholder="Select gene..."
+                                    options={options}
                                     defaultValue={selected}
                                     value={selected}
+                                    inputValue={input}
                                     onChange={(ev)=>{
                                         console.log(ev);
+                                        setInput(ev.label);
                                         setSelected(ev.value);
                                     }}
-                                    options={options}
+                                    onFocus={(ev)=>{
+                                        setInput("");
+                                    }}
+                                    onInputChange={(ev)=>{
+                                        setInput(ev);
+                                    }}
                                 />
                             </Col>
                         </Row>
