@@ -6,9 +6,10 @@ import Select from 'react-select';
 import Solana from "../lib/solana";
 import Gene from "../lib/gene";
 
-import { FaAngleDoubleLeft,FaAngleDoubleRight } from "react-icons/fa";
 
+import { FaAngleDoubleLeft,FaAngleDoubleRight,FaList } from "react-icons/fa";
 import LuckyList from "./list";
+import GeneOverview from "./genes";
 
 let history=[];
 
@@ -17,6 +18,7 @@ function Search(props) {
         row: [12],
         left: [3,7,2],
         search: [10, 2],
+        gene:[2,10],
     }
 
     let [account, setAccount] = useState("G5YzePkbR7istighPC2xSjmGQh6SyVB1YcwYc5jVmvGN");
@@ -55,6 +57,10 @@ function Search(props) {
         },
         clickNext:()=>{
             self.update(account);
+        },
+        clickGenes:()=>{
+            console.log(props.dialog);
+            props.dialog.show(<GeneOverview dialog={props.dialog}/>,"Gene Overview")
         },
         update: async (acc,stamp,skip) => {
 
@@ -107,20 +113,33 @@ function Search(props) {
             <Col sm={size.search[0]} xs={size.search[0]}>
                 <Row>
                     <Col className="pt-2" sm={size.left[0]} xs={size.left[0]}>
-                        <Select
-                            className="text-dark"
-                            defaultValue={selected}
-                            value={selected}
-                            onChange={(ev)=>{
-                                console.log(ev);
-                                setSelected(ev.value);
-                            }}
-                            options={options}
-                        />
+                        <Row>
+                            <Col sm={size.gene[0]} xs={size.gene[0]}>
+                                <button className="btn btn-md btn-dark" onClick={(ev)=>{
+                                    self.clickGenes();
+                                }}>
+                                    <FaList />
+                                </button>
+                            </Col>
+                            <Col sm={size.gene[1]} xs={size.gene[1]}>
+                                <Select
+                                    className="text-dark"
+                                    placeholder="Select gene..."
+                                    defaultValue={selected}
+                                    value={selected}
+                                    onChange={(ev)=>{
+                                        console.log(ev);
+                                        setSelected(ev.value);
+                                    }}
+                                    options={options}
+                                />
+                            </Col>
+                        </Row>
+                        
+                        
                     </Col>
 
                     <Col className="pt-2" sm={size.left[1]} xs={size.left[1]}>
-                       
                         <input
                             type="text"
                             className="form-control"
