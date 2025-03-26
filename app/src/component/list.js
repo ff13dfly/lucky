@@ -117,10 +117,10 @@ function LuckyList(props) {
     }
 
     useEffect(() => {
-        // console.log(gene);
+        //console.log(`Update now`);
         if (props.data.length !== 0 && props.gene) {
-            setList(props.data);
             self.getGene(gene, (ge) => {
+                setList(props.data);
                 setTemplate(ge);
                 self.freshSignatures(props.data, ge, () => {
                     //setReady(true);
