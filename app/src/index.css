@@ -31,6 +31,10 @@ body {
   background-color: #512da8;
 }
 
+.background-search{
+  background-color: #c8b8ed;
+}
+
 .background-green{
   background-color: #4d6d4f;
 }
@@ -48,7 +52,7 @@ body {
   background-color: #3498db; */
   animation: shakeAnimation 0.5s ease-in-out infinite;
 }
-.point{
+.pointer{
   cursor: pointer;
 }
 

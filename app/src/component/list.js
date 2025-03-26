@@ -139,13 +139,15 @@ function LuckyList(props) {
                     <Card 
                         hidden={!row.hash} 
                         style={{ width: "100%" }} 
-                        className={(row.hash && self.win(row.hash))?"background-green point shake":"background-purple point"}
+                        className={(row.hash && self.win(row.hash))?"background-green pointer shake":"background-purple pointer"}
                     >
                         <Card.Img variant="top"  src={row.thumb} onClick={(ev)=>{
                             self.clickSignagture(row.signature,row.slot, row.hash);
                         }}/>
                         <Row className="pb-2">
-                            <Col className="text-center pt-2" style={{color:"#FFFFFF"}} sm={size.row[0]} xs={size.row[0]}>
+                            <Col className="text-center pt-2" style={{color:"#FFFFFF"}} sm={size.row[0]} xs={size.row[0]}onClick={(ev)=>{
+                                self.clickSignagture(row.signature,row.slot, row.hash);
+                            }}>
                                 <FaMapSigns className="pr-2" size={18}/>
                                 <strong className="pt-1">{row.slot.toLocaleString()}</strong>
                             </Col>

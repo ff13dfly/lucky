@@ -7,7 +7,7 @@ import Solana from "../lib/solana";
 import Gene from "../lib/gene";
 
 
-import { FaAngleDoubleLeft,FaAngleDoubleRight,FaList } from "react-icons/fa";
+import { FaAngleDoubleLeft,FaAngleDoubleRight,FaBars } from "react-icons/fa";
 import LuckyList from "./list";
 import GeneOverview from "./genes";
 
@@ -98,7 +98,6 @@ function Search(props) {
 
     useEffect(() => {
         if (options.length === 0) self.fresh();
-        console.log(window.location);
 
         if(window.location.pathname && window.location.pathname.length!==1){
             const input=window.location.pathname.substr(1);
@@ -127,7 +126,7 @@ function Search(props) {
                                 <button className="btn btn-md btn-dark" onClick={(ev)=>{
                                     self.clickGenes();
                                 }}>
-                                    <FaList />
+                                    <FaBars />
                                 </button>
                             </Col>
                             <Col sm={size.gene[1]} xs={size.gene[1]}>
@@ -144,8 +143,6 @@ function Search(props) {
                                 />
                             </Col>
                         </Row>
-                        
-                        
                     </Col>
 
                     <Col className="pt-2" sm={size.left[1]} xs={size.left[1]}>
@@ -168,7 +165,7 @@ function Search(props) {
             <Col className="text-end pt-2" sm={size.search[1]} xs={size.search[1]}>
                 <button
                     hidden={before === ""}
-                    className="btn btn-md btn-secondary pr-2"
+                    className="btn btn-md btn-dark pr-2"
                     
                     disabled={frozen || !enable.pre}
                     onClick={(ev) => {
@@ -178,7 +175,7 @@ function Search(props) {
                 ><FaAngleDoubleLeft size={20}/></button>
                 <button
                     hidden={before === ""}
-                    className="btn btn-md btn-secondary"
+                    className="btn btn-md btn-dark"
                     disabled={frozen || !enable.next}
                     onClick={(ev) => {
                         //self.clickSearch(account)

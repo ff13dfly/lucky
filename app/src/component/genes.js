@@ -1,10 +1,30 @@
 import { Row, Col } from "react-bootstrap";
 
+import { useState, useEffect } from "react";
+import Gene from "../lib/gene";
+
 function GeneOverview(props) {
     const size = {
         row: [12],
         left:[8,4]
     }
+
+    let [ list, setList ] = useState([]);
+
+    const self={
+        clickNewGene:(ev)=>{
+            
+        },
+        fresh:async ()=>{
+            Gene.list((data)=>{
+                console.log(data);
+            });
+        }
+    }
+
+    useEffect(() => {
+        self.fresh();
+    }, []);
     
     return (
         <Row className="pt-2">
@@ -21,7 +41,7 @@ function GeneOverview(props) {
 
             <Col className="text-end" sm={size.left[1]} xs={size.left[1]}>
                 <button className="btn btn-lg btn-primary" onClick={(ev)=>{
-
+                    self.clickNewGene(ev);
                 }}> + New Gene </button>
             </Col>
         </Row>

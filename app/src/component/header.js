@@ -39,6 +39,10 @@ function Header(props) {
                         <Image
                             src={`${window.location.origin}/image/logo.png`}
                             width="100%"
+                            className="pointer"
+                            onClick={(ev)=>{
+
+                            }}
                         />
                     </Col>
                     <Col className="pt-1" sm={size.left[1]} xs={size.left[1]}>
