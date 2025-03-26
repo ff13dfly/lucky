@@ -17,7 +17,7 @@ function LuckyList(props) {
     const size = {
         row: [12],
         left: [9,3],
-        grid:[3],
+        grid:[2],
     }
 
     let [list, setList] = useState([]);

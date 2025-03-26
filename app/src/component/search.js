@@ -58,7 +58,7 @@ function Search(props) {
         },
         update: async (acc,stamp,skip) => {
 
-            const data = await Solana.recentTxs(acc, stamp===undefined?before:stamp);
+            const data = await Solana.recentTxs(acc, stamp===undefined?before:stamp,18);
             //console.log(data);
             if (data.error) return false;
             if(data.length===0)return false;

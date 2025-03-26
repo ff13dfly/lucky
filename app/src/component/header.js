@@ -37,7 +37,7 @@ function Header(props) {
                 {/* <Demo /> */}
             </Col>
             <Col className="pt-2 text-end" sm={size.nav[1]} xs={size.nav[1]}>
-                <button className="btn btn-lg btn-info" onClick={(ev)=>{
+                <button className="btn btn-md btn-info" onClick={(ev)=>{
                     self.clickWhat(ev);
                 }}>What's LuckySig?</button>
                 <button hidden={hidden} className="btn btn-lg btn-warning pl-2" onClick={(ev)=>{
@@ -45,7 +45,7 @@ function Header(props) {
                 }}>Portal</button>
             </Col>
             <Col className="pt-2 text-end" sm={size.nav[2]} xs={size.nav[2]}>
-                <WalletMultiButton /> 
+                <WalletMultiButton className="btn-md"/> 
             </Col>
         </Row>
     )

@@ -7,3 +7,5 @@ yarn.lock
 
 **/*.rs.bk
 luckysig/Cargo.lock
+
+chat

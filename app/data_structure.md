@@ -41,25 +41,23 @@
 
 ### Size
 
-* 显示图像的尺寸`[ SIZE_X, SIZE_Y ]`,可以作为NFT的图像来源，一般为方形
+* Render result size `[ SIZE_X, SIZE_Y ]`.
 
 ### Cell
 
-* 截取图像的最小尺寸`[ CELL_X, CELL_Y ]`,为拼接最终图像的最小单元，可以不为方形
+* Mini size of image to cut `[ CELL_X, CELL_Y ]`
 
 ### Grid
 
-* 原始图像的切分结果`[ GRID_X, GRID_Y ]`,原始图像的切割逻辑
+* Orginal raw image lines and rows base on cell size `[ GRID_X, GRID_Y ]`
 
 ## Parts
 
-* 使用不同的Part来拼接最终的图像，每个Part的定义如下详述。
-
-* 根据Part里的OPTION可以控制百分比。
+* Result is combined from `parts`, the definition as follow.
 
 ### Value
 
-* 获取到取值的定义 `[ START, STEP, OPTION, OFFSET ]`,从64位的SHA256的hash里取出数字的定义
+* Get the selected part from hash. `[ START, STEP, OPTION, OFFSET ]`
 
 * START:
 
@@ -71,15 +69,15 @@
 
 ### Image Section
 
-* 获取图像位置的定义 `[ LINE, ROW, LINE_EXT, ROW_EXT ]`,从64位的SHA256的hash里取出数字的定义
+* Where to get the proper part from raw image. `[ LINE, ROW, LINE_EXT, ROW_EXT ]`
 
 ### Position of part
 
-* 截取出的图像，如何定位到最终的结果图像上的位置`[ POSITION_X, POSITION_Y ]`
+* Position of part to locate on result image. `[ POSITION_X, POSITION_Y ]`
 
 ### Rarity of parts
 
-* 根据系列对应的取值，用于评估是否为最终结果
+* Which part as the winner result.
 
 ## Series
 
