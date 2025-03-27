@@ -13,6 +13,12 @@ import Details from "./details";
 
 import { FaMapSigns } from "react-icons/fa";
 
+/* Single signature detail page
+*   @param  {object[]}      data       //force to fresh function
+*   @param  {string}        gene       //gene cid
+*   @param  {string}        owner      //signature owner
+*   @param  {function}      dialog    //system dialog function
+*/
 function LuckyList(props) {
     const size = {
         row: [12],
@@ -39,6 +45,7 @@ function LuckyList(props) {
                 signature={signature} 
                 slot={slot} 
                 gene={gene}
+                owner={props.owner}
                 win={self.win(hash)}
             />, "LuckySig Details" );
         },
@@ -125,7 +132,7 @@ function LuckyList(props) {
     useEffect(() => {
         //console.log(`Update now`);
         setList(props.data);
-
+        console.log(props.data);
         if (props.data.length !== 0 && props.gene) {
             self.getGene(gene, (ge) => {
                 
@@ -137,7 +144,7 @@ function LuckyList(props) {
             });
         }
 
-    }, [props.data,props.gene]);
+    }, [props.data,props.gene,props.owner]);
 
     return (
         <Row hidden={list.length === 0} >

@@ -5,9 +5,10 @@ import Select from 'react-select';
 
 import Solana from "../lib/solana";
 import Gene from "../lib/gene";
+import config from "../config";
 
 
-import { FaAngleDoubleLeft,FaAngleDoubleRight,FaBars,FaDna } from "react-icons/fa";
+import { FaAngleDoubleLeft,FaAngleDoubleRight,FaDna } from "react-icons/fa";
 import LuckyList from "./list";
 import GeneOverview from "./genes";
 
@@ -21,27 +22,26 @@ function Search(props) {
         gene:[3,9],
     }
 
-    let [account, setAccount] = useState("");
-    let [list, setList] = useState([]);
-    let [before, setBefore] = useState("");
-    let [enable, setEnable] = useState({pre:false,next:false});
+    let [input, setInput] = useState("");           //input address from url
+    let [account, setAccount] = useState("");       //owner publickey
+    let [list, setList] = useState([]);             //signature list
+    let [before, setBefore] = useState("");         //page signature
+    let [enable, setEnable] = useState({pre:false,next:false});     //"pre" and "next" button status
     let [frozen, setFrozen] = useState(true);
 
-    let [options, setOptions] = useState([]);
-    let [selected, setSelected] = useState(null);
-    let [input, setInput] = useState("");
+    let [options, setOptions] = useState([]);       //gene name list
+    let [selected, setSelected] = useState(null);   //selected gene
     
     const wallet = useWallet();
-    const limit=12;
-
+    const limit = config.page.step;
     const self = {
         changeAccount: (ev) => {
             const acc=ev.target.value;
             setAccount(acc);
 
             if(Solana.validAccount(acc)){
-                history=[];
-                self.update(acc);
+                self.clean();
+                self.update(acc,"",true);
             }
         },
         
@@ -71,8 +71,12 @@ function Search(props) {
                 setFrozen(false);
             }, 1000);
         },
+        clean:()=>{
+            history=[];
+            setBefore("");
+        },
         update: async (acc,stamp,skip) => {
-            const data = await Solana.recentTxs(acc, stamp===undefined?before:stamp,18);
+            const data = await Solana.recentTxs(acc, stamp===undefined?before:stamp,limit);
             if (data.error) return false;
             if(data.length===0)return false;
             
@@ -204,7 +208,7 @@ function Search(props) {
             </Col>
 
             <Col className="pt-2" sm={size.row[0]} xs={size.row[0]}>
-                <LuckyList data={list} dialog={props.dialog} gene={selected} />
+                <LuckyList data={list} dialog={props.dialog} gene={selected} owner={account} />
             </Col>
             <Col hidden={!frozen} className="pt-2" sm={size.row[0]} xs={size.row[0]}>
                 <h4>Loading...</h4>

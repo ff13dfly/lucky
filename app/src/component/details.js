@@ -24,6 +24,7 @@ import { FaCopy } from "react-icons/fa";
 *   @param  {number}    slot            //transaction slot
 *   @param  {boolean}   win             //wether win
 *   @param  {string}    gene            //gene cid
+*   @param  {string}    owner           //signature owner
 *   @param  {function}  dialog          //system dialog function
 */
          
@@ -287,12 +288,7 @@ function Details(props) {
                 });
             });
 
-            //2.check wether claimed.
-            const acc=self.getInput();
-            //console.log(acc,wallet.publicKey.toString());
-            if(props.win){
-                if(acc===false || acc===wallet.publicKey.toString())self.setClaimedStatus();
-            }
+            if(props.win && props.owner===wallet.publicKey.toString())self.setClaimedStatus();
         },
 
     }

@@ -8,6 +8,9 @@ const config={
         mainnet:"",
     },
     env:"devnet",
+    page:{
+        step:18,
+    }
 }
 
 export default config;
