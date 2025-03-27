@@ -31,12 +31,18 @@ body {
   background-color: #512da8;
 }
 
+
+
 .background-search{
   background-color: #c8b8ed;
 }
 
 .background-green{
   background-color: #4d6d4f;
+}
+
+.shadow{
+  box-shadow: 5px -5px 5px rgba(105, 13, 166, 0);
 }
 
 .pr-2{

@@ -59,6 +59,8 @@ function Details(props) {
     let [disable, setDisable] = useState(true);     //wether disable button
     let [info, setInfo] = useState(progress[0].title);
 
+    let [hidden,setHidden] = useState(true);
+
     let active = useRef(1);
 
     const icons = {
@@ -122,6 +124,13 @@ function Details(props) {
         showStep:(index)=>{
             setPointer(index);
             setInfo(progress[index].title);
+        },
+        getInput:()=>{
+            if(window.location.pathname && window.location.pathname.length!==1){
+                const input=window.location.pathname.slice(1);
+                if(Solana.validAccount(input)) return input;
+            }
+            return false
         },
         failedClaim:(index)=>{
             setPointer(index);
@@ -236,7 +245,7 @@ function Details(props) {
                 if(dt.error) return self.failedClaim(2)
                 const name=dt.name;
                 setName(name);
-
+                setHidden(false);
                 //2. check wether approved.
                 const record=await self.getLuckyRecord(name,props.signature);
                 if(record.error){
@@ -279,13 +288,18 @@ function Details(props) {
             });
 
             //2.check wether claimed.
-            if(props.win) self.setClaimedStatus();
+            const acc=self.getInput();
+            //console.log(acc,wallet.publicKey.toString());
+            if(props.win){
+                if(acc===false || acc===wallet.publicKey.toString())self.setClaimedStatus();
+            }
         },
+
     }
 
     useEffect(() => {
         self.fresh();
-    }, [props.signature, props.gene]);
+    }, [props.signature, props.gene, wallet.publicKey]);
 
     return (
         <Row >
@@ -387,11 +401,11 @@ function Details(props) {
                 </Row>
             </Col>
 
-            <Col hidden={!props.win} className="pt-1" sm={size.row[0]} xs={size.row[0]}>
+            <Col hidden={hidden} className="pt-1" sm={size.row[0]} xs={size.row[0]}>
                 <hr/>
             </Col>
 
-            <Col hidden={!props.win} className="text-center pt-2" sm={size.row[0]} xs={size.row[0]}>
+            <Col hidden={hidden} className="text-center pt-2" sm={size.row[0]} xs={size.row[0]}>
                 <button className={self.getButtonStyle()} disabled={disable} onClick={(ev)=>{
                     self.clickApprove(ev);
                 }}>{info}</button>

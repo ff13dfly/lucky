@@ -24,7 +24,7 @@ function LuckyList(props) {
     let [template, setTemplate]= useState(null);
 
     const gene=props.gene;
-    
+    const offset=66;
     const self = {
         clickApprove:(signature)=>{
             //console.log(signature);
@@ -59,11 +59,10 @@ function LuckyList(props) {
             });
         },
         getMulti:(block,signature,ck)=>{
-            const arr=[block,block+66];
+            const arr=[block,block+offset];
             Cache(arr,(map)=>{
-                //console.log(map);
                 if(map===false) return ck && ck(false);
-                const hash=`0x${SHA256(signature + map[block] + map[block+66]).toString()}`;
+                const hash=`0x${SHA256(signature + map[block] + map[block+offset]).toString()}`;
                 return ck && ck(hash);
             });
         },
@@ -107,20 +106,29 @@ function LuckyList(props) {
             });
         },
         win:(hash)=>{
-            //console.log(template);
             if(template===null) return false;
             if(!template.series) return false;
             const arr= Gene.win(hash,template.parts,template.series);
-            //console.log(arr);
             return arr[0];
+        },
+        getClass:(hash)=>{
+            let cls="pointer shadow ";
+            if(hash && self.win(hash)){
+                cls+="background-green shake"
+            }else{
+                cls+="background-purple"
+            }
+            return cls;
         },
     }
 
     useEffect(() => {
         //console.log(`Update now`);
+        setList(props.data);
+
         if (props.data.length !== 0 && props.gene) {
             self.getGene(gene, (ge) => {
-                setList(props.data);
+                
                 setTemplate(ge);
                 self.freshSignatures(props.data, ge, () => {
                     //setReady(true);
@@ -135,11 +143,7 @@ function LuckyList(props) {
         <Row hidden={list.length === 0} >
             {list.map((row, index) => (
                 <Col className="pt-3" key={index} sm={size.grid[0]} xs={size.grid[0]}>
-                    <Card 
-                        hidden={!row.hash} 
-                        style={{ width: "100%" }} 
-                        className={(row.hash && self.win(row.hash))?"background-green pointer shake":"background-purple pointer"}
-                    >
+                    <Card hidden={!row.hash} style={{ width: "100%" }} className={self.getClass(row.hash)}>
                         <Card.Img variant="top"  src={row.thumb} onClick={(ev)=>{
                             self.clickSignagture(row.signature,row.slot, row.hash);
                         }}/>
@@ -152,7 +156,7 @@ function LuckyList(props) {
                             </Col>
                         </Row>
                     </Card>
-                    <Card hidden={row.hash} style={{ width: "100%",background:"#000000" }}>
+                    <Card hidden={row.hash} style={{width: "100%",background:"#000000"}}>
                         <Card.Img variant="top" src={`${window.location.origin}/image/holding.png`} />
                         <Row className="pb-2">
                             <Col className="text-center pt-2" style={{color:"#FFFFFF"}} sm={size.row[0]} xs={size.row[0]}>

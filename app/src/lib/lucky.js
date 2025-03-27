@@ -279,10 +279,19 @@ const actions={
     }
 };
 
+const check={
+
+};
+
 const Lucky={
     set:async(wt)=>{
         wallet = wt;
         program = await Solana.getContract(wt);
+    },
+
+    // check signature status
+    status:(name,signature,addr,ck)=>{
+
     },
 
     //get raw data of account on chain

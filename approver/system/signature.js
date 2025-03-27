@@ -4,6 +4,8 @@ const Solana=require("../lib/solana");
 const DB=require("../lib/db");
 const Cache=require("./cache");
 
+const offset=66;
+
 const self={
     getSigner:(accounts)=>{
         //console.log(accounts);
@@ -18,7 +20,7 @@ const self={
             if(data===null) return ck && ck({error:"Invalid signature."});
             const owner=self.getSigner(data.transaction.message.accountKeys);
 
-            const start=data.slot,end=start+66;
+            const start=data.slot,end=start+offset;
             Solana.getSlotHash(start,(hash_start)=>{
                 if(hash_start.error) return ck && ck(hash_start);
 

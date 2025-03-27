@@ -105,25 +105,27 @@ function Search(props) {
                 setSelected(arr[0].value);
             });
         },
+        getAccount:()=>{
+            if(window.location.pathname && window.location.pathname.length!==1){
+                const input=window.location.pathname.slice(1);
+                if(Solana.validAccount(input)) return input;
+            }
+            if (wallet.publicKey !== null) return  wallet.publicKey.toString();    
+            return false
+        },
     }
 
     useEffect(() => {
         if (options.length === 0) self.fresh();
 
-        if(window.location.pathname && window.location.pathname.length!==1){
-            const input=window.location.pathname.substr(1);
-            setAccount(input);
+        //test account
+        //4PkiqJkUvxr9P8C1UsMqGN8NJsUcep9GahDRLfmeu8UK
+        const acc=self.getAccount();
+        if(acc!==false){
+            setAccount(acc);
             setTimeout(() => {
-                self.update(input);
+                self.update(acc);
             }, 1000);
-        }else{
-            if (wallet.publicKey !== null) {
-                const acc = wallet.publicKey.toString();
-                setAccount(acc);
-                setTimeout(() => {
-                    self.update(acc);
-                }, 1000);
-            }
         }
     }, [wallet.publicKey]);
 
