@@ -91,7 +91,7 @@ function Details(props) {
             self.showStep(6);
             setTimeout(async () => {
                 self.showStep(7);
-                const whitelist=await self.getWhiteList(name);
+                const whitelist = await self.getWhiteList(name);
                 if(whitelist.error) return self.failedClaim(2);
     
                 self.showStep(8);

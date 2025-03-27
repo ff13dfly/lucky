@@ -1,7 +1,9 @@
 import { Row, Col, Card } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { SHA256 } from "crypto-js";
+import { SHA256,MD5} from "crypto-js";
+import { useWallet } from "@solana/wallet-adapter-react";
 
+import Solana from "../lib/solana";
 import TPL from "../system/tpl";
 import Render from "../system/render";
 import Approver from "../lib/approver";
@@ -29,7 +31,7 @@ function LuckyList(props) {
     let [list, setList] = useState([]);
     let [template, setTemplate]= useState(null);
 
-    const gene=props.gene;
+    const wallet = useWallet();
     const offset=66;
     const self = {
         clickApprove:(signature)=>{
@@ -38,15 +40,14 @@ function LuckyList(props) {
                 console.log(res);
             });
         },
-        clickSignagture:(signature,slot,hash)=>{
-            
+        clickSignagture:(signature,slot,win)=>{
             props.dialog.show(<Details 
                 dialog={props.dialog} 
                 signature={signature} 
                 slot={slot} 
-                gene={gene}
+                gene={props.gene}
                 owner={props.owner}
-                win={self.win(hash)}
+                win={win}
             />, "LuckySig Details" );
         },
         getGene: (id, ck) => {
@@ -73,6 +74,7 @@ function LuckyList(props) {
                 return ck && ck(hash);
             });
         },
+        
         getSignatures: async (arr, tpl ,ck, signs) => {
             if (signs === undefined) signs = [];
             if (arr.length === 0) return ck && ck(signs);
@@ -94,69 +96,95 @@ function LuckyList(props) {
                 });
             });
         },
-        freshSignatures:async (arr, tpl ,ck, index) => {
+        isClaimRecord:async(name,signature)=>{
+            const program = await Solana.getContract(wallet);
+            const m5 = MD5(name + signature).toString();
+
+            const target="claimRecord";
+            const seeds=[m5,"claim"];
+
+            const PDA=Solana.getPDA(seeds,program.programId);
+            try {
+                const data =await program.account[target].fetch(PDA);
+                return data;
+            } catch (error) {
+                return {error:"No record on chain."}
+            }
+        },
+        freshSignatures:async (arr, tpl, name ,ck, index) => {
             if(index===undefined) index=0;
             if(!arr[index]) return ck && ck();
-            const row=arr[index];
-            self.getMulti(row.slot,row.signature,(hash)=>{
+            const row=arr[index];   
+            self.getMulti(row.slot,row.signature,async (hash)=>{
                 index++;
                 if(hash===false){
                     row.pending=true;
-                    return self.freshSignatures(arr, tpl, ck, index);
-                } 
+                    return self.freshSignatures(arr, tpl,name, ck, index);
+                }
+
+                if(self.win(hash,tpl)){
+                    row.win=true;
+                    const claimed=await self.isClaimRecord(name,row.signature);
+                    row.claimed = claimed.done?true:false;
+                }else{
+                    row.win=false;
+                }
+                
                 Render.thumb(hash, tpl.image, tpl.parts, tpl.basic, [], (bs64) => {
                     row.hash=hash;
                     row.thumb=bs64;
                     setList(tools.clone(arr));
-                    return self.freshSignatures(arr, tpl, ck, index);
+                    return self.freshSignatures(arr, tpl,name, ck, index);
                 });
             });
         },
-        win:(hash)=>{
-            if(template===null) return false;
-            if(!template.series) return false;
-            const arr= Gene.win(hash,template.parts,template.series);
+        win:(hash,tpl)=>{
+            //console.log(tpl);
+            if(tpl===null || !tpl) return false;
+            if(!tpl.series) return false;
+            const arr= Gene.win(hash,tpl.parts,tpl.series);
             return arr[0];
         },
-        getClass:(hash)=>{
+        getClass:(win,claimed)=>{
             let cls="pointer shadow ";
-            if(hash && self.win(hash)){
-                cls+="background-green shake"
+            if(win){
+                cls+="background-green "
+                if(!claimed) cls+="shake"
             }else{
-                cls+="background-purple"
+                cls+="background-purple "
             }
             return cls;
         },
     }
 
     useEffect(() => {
-        //console.log(`Update now`);
         setList(props.data);
-        console.log(props.data);
         if (props.data.length !== 0 && props.gene) {
-            self.getGene(gene, (ge) => {
-                
-                setTemplate(ge);
-                self.freshSignatures(props.data, ge, () => {
-                    //setReady(true);
-                    //setList(arr);
+            Gene.search(props.gene,(dt)=>{
+                if(dt.error) return false;
+                //console.log(dt);
+                self.getGene(props.gene, (ge) => {
+                    setTemplate(ge);
+                    self.freshSignatures(props.data, ge, dt.name, () => {
+    
+                    });
                 });
             });
+            
         }
-
     }, [props.data,props.gene,props.owner]);
 
     return (
         <Row hidden={list.length === 0} >
             {list.map((row, index) => (
                 <Col className="pt-3" key={index} sm={size.grid[0]} xs={size.grid[0]}>
-                    <Card hidden={!row.hash} style={{ width: "100%" }} className={self.getClass(row.hash)}>
+                    <Card hidden={!row.hash} style={{ width: "100%" }} className={self.getClass(row.win,row.claimed)}>
                         <Card.Img variant="top"  src={row.thumb} onClick={(ev)=>{
-                            self.clickSignagture(row.signature,row.slot, row.hash);
+                            self.clickSignagture(row.signature,row.slot,row.win);
                         }}/>
                         <Row className="pb-2">
                             <Col className="text-center pt-2" style={{color:"#FFFFFF"}} sm={size.row[0]} xs={size.row[0]}onClick={(ev)=>{
-                                self.clickSignagture(row.signature,row.slot, row.hash);
+                                self.clickSignagture(row.signature,row.slot,row.win);
                             }}>
                                 <FaMapSigns className="pr-2" size={18}/>
                                 <strong className="pt-1">{row.slot.toLocaleString()}</strong>

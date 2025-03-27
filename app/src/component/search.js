@@ -27,6 +27,7 @@ function Search(props) {
     let [list, setList] = useState([]);             //signature list
     let [before, setBefore] = useState("");         //page signature
     let [enable, setEnable] = useState({pre:false,next:false});     //"pre" and "next" button status
+    let [info, setInfo]=useState("");               //"pre" | "next" button info
     let [frozen, setFrozen] = useState(true);
 
     let [options, setOptions] = useState([]);       //gene name list
@@ -34,6 +35,7 @@ function Search(props) {
     
     const wallet = useWallet();
     const limit = config.page.step;
+    //let lock=false;   
     const self = {
         changeAccount: (ev) => {
             const acc=ev.target.value;
@@ -47,8 +49,9 @@ function Search(props) {
         
         clickPre:()=>{
             //setFrozen(true);
+            setEnable({pre:false,next:false});      //avoid more click
+            setInfo("Loading...");
             history.pop();
-            //console.log(`Click Pre button, history: ${JSON.stringify(history)}`)
             if(history.length <= 1 ){
                 self.update(account,"",true);
             }else{
@@ -57,6 +60,9 @@ function Search(props) {
             }
         },
         clickNext:()=>{
+            //setFrozen(true);
+            setEnable({pre:false,next:false});       //avoid more click
+            setInfo("Loading...");
             self.update(account);
         },
         clickGenes:()=>{
@@ -75,6 +81,21 @@ function Search(props) {
             history=[];
             setBefore("");
         },
+        // isClaimRecord:async(name,signature)=>{
+        //     const program = await Solana.getContract(wallet);
+        //     const m5 = MD5(name + signature).toString();
+
+        //     const target="claimRecord";
+        //     const seeds=[m5,"claim"];
+
+        //     const PDA=Solana.getPDA(seeds,program.programId);
+        //     try {
+        //         const data =await program.account[target].fetch(PDA);
+        //         return data;
+        //     } catch (error) {
+        //         return {error:"No record on chain."}
+        //     }
+        // },
         update: async (acc,stamp,skip) => {
             const data = await Solana.recentTxs(acc, stamp===undefined?before:stamp,limit);
             if (data.error) return false;
@@ -84,6 +105,10 @@ function Search(props) {
             if(!skip){
                 history.push(last.signature);
             }
+
+            // for(let i=0;i<data.length;i++){
+            //     console.log(data[i]);
+            // }
                 
             setBefore(last.signature);
             setList(data);
@@ -91,6 +116,7 @@ function Search(props) {
             enable.next=data.length<limit?false:true;
             enable.pre=history.length<=1?false:true;
             setEnable(JSON.parse(JSON.stringify(enable)));
+            setInfo("");
 
             setFrozen(false);
         },
@@ -187,6 +213,7 @@ function Search(props) {
             </Col>
 
             <Col className="text-end pt-2" sm={size.search[1]} xs={size.search[1]}>
+                <span className="pr-2">{info}</span>
                 <button
                     hidden={before === ""}
                     className="btn btn-md btn-dark pr-2"
@@ -207,8 +234,8 @@ function Search(props) {
                 ><FaAngleDoubleRight size={20}/></button>
             </Col>
 
-            <Col className="pt-2" sm={size.row[0]} xs={size.row[0]}>
-                <LuckyList data={list} dialog={props.dialog} gene={selected} owner={account} />
+            <Col hidden={frozen} className="pt-2" sm={size.row[0]} xs={size.row[0]}>
+                <LuckyList data={list} dialog={props.dialog} gene={selected} owner={account}/>
             </Col>
             <Col hidden={!frozen} className="pt-2" sm={size.row[0]} xs={size.row[0]}>
                 <h4>Loading...</h4>

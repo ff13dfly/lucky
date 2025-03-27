@@ -31,7 +31,7 @@ function GeneCreate(props) {
                 <hr />
             </Col>
             <Col className="text-center" sm={size.row[0]} xs={size.row[0]}>
-                <button className="btn btn-lg btn-primary">Create Now</button>
+                <button className="btn btn-lg btn-primary">Create New Gene Now</button>
             </Col>
         </Row>
     )
