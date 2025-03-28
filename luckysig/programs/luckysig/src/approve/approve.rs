@@ -17,6 +17,7 @@ use crate::constants::{
     LS_SEEDS_TOTAL_SUPPLY_COUNTER,
     LS_SEEDS_APPROVE_RECORD,
 };
+use md5;
 
 /********************************************************************/
 /************************ Public Functions **************************/
@@ -30,7 +31,7 @@ use crate::constants::{
 /// 1. record the winner on PDA account. It is used for `claim` to mint out the token actually.
 pub fn entry(
     ctx: Context<RecordLucky>,      //default from system
-    _md5:String,                    //md5(name+signature)
+    md5:String,                    //md5(name+signature)
     name:String,                    //name of gene
     signature:String,               //target transaction signature
     owner:String,                   //signature owner pubkey string
@@ -48,7 +49,9 @@ pub fn entry(
     }
 
     //0.2. check wether valid MD5 value
-    //TODO, more check here, check MD5(name+signture)===_md5
+    if !is_valid_md5(md5.as_ref(),name.as_ref(),signature.as_ref()) {
+        return Err(ErrorCode::InvalidMD5.into());
+    }
     
     //0.3. name LuckySig exsist
     let registry = &ctx.accounts.map_account;
@@ -119,6 +122,12 @@ fn is_valid_pubkey(pubkey_str: &str) -> bool {
     Pubkey::from_str(pubkey_str).is_ok()
 }
 
+fn is_valid_md5(md5:&str,name:&str,signature:&str) -> bool{
+    let input = format!("{}{}", name, signature);
+    let computed_md5 = format!("{:x}", md5::compute(input));
+    computed_md5 == md5.to_lowercase()
+}
+
 /********************************************************************/
 /************************* Data Structure ***************************/
 /********************************************************************/
@@ -173,6 +182,9 @@ pub enum ErrorCode {
 
     #[msg("Signature is not BS58 code.")]
     InvalidSignature,
+
+    #[msg("Invalid MD5 string.")]
+    InvalidMD5,
 
     #[msg("Invalid public key.")]
     InvalidOwner,

@@ -23,10 +23,26 @@ pub fn is_valid_gene(input: &str, _rate:u32 ) -> bool {
         }
 
         //a. size check
+        const SIZE_MAX:u32=1200;        //render result max size 1200
+        if value_to_u32(&basic[0][0]).unwrap() <= 0 
+            || value_to_u32(&basic[0][1]).unwrap() <= 0 {
+            return false;
+        }
 
         //b. grid check
+        if value_to_u32(&basic[1][0]).unwrap() <= 1 
+            || value_to_u32(&basic[1][1]).unwrap() <= 1 {
+            return false;
+        }
 
         //c. cell check
+        const CELL_MIN:u32=30;      //min size of cell
+        if value_to_u32(&basic[2][0]).unwrap() <= CELL_MIN 
+            || value_to_u32(&basic[2][1]).unwrap() <= CELL_MIN 
+            || value_to_u32(&basic[2][0]).unwrap() > SIZE_MAX
+            || value_to_u32(&basic[2][1]).unwrap() > SIZE_MAX {
+            return false;
+        }
 
     } else {
         return false;
@@ -87,7 +103,7 @@ pub fn is_valid_gene(input: &str, _rate:u32 ) -> bool {
                     return false;
                 }
 
-                //a. check position limit
+                //a. check position limit, wether out of render result
 
 
                 // 2.4 check rarity [[u32]]
@@ -142,11 +158,6 @@ pub fn is_valid_gene(input: &str, _rate:u32 ) -> bool {
 fn value_to_u32(value: &Value) -> Option<u32> {
     value.as_u64().and_then(|v| u32::try_from(v).ok())
 }
-
-/********************************************************************/
-/************************* Data Structure ***************************/
-/********************************************************************/
-
 
 /********************************************************************/
 /**************************** Test Part *****************************/

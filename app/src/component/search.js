@@ -2,6 +2,7 @@ import { Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import Select from 'react-select';
+import { MD5 } from "crypto-js";
 
 import Solana from "../lib/solana";
 import Gene from "../lib/gene";
@@ -147,7 +148,7 @@ function Search(props) {
 
     useEffect(() => {
         if (options.length === 0) self.fresh();
-
+        console.log(MD5("abc").toString())
         //test account
         //4PkiqJkUvxr9P8C1UsMqGN8NJsUcep9GahDRLfmeu8UK
         const acc=self.getAccount();
