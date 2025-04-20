@@ -148,7 +148,7 @@ function Search(props) {
 
     useEffect(() => {
         if (options.length === 0) self.fresh();
-        console.log(MD5("abc").toString())
+        //console.log(MD5("abc").toString())
         //test account
         //4PkiqJkUvxr9P8C1UsMqGN8NJsUcep9GahDRLfmeu8UK
         const acc=self.getAccount();

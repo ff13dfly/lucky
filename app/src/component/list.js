@@ -158,6 +158,7 @@ function LuckyList(props) {
     }
 
     useEffect(() => {
+        console.log(SHA256("hell0").toString());
         setList(props.data);
         if (props.data.length !== 0 && props.gene) {
             Gene.search(props.gene,(dt)=>{
