@@ -73,7 +73,7 @@ pub fn is_valid_gene(input: &str, _rate:u32 ) -> bool {
 
                 //b. option params check
                 let options:u32=value_to_u32(&part_arr[0][2]).unwrap();
-                println!("{:?}", options); 
+                //println!("{:?}", options); 
                 if options < 1 {
                     return false;
                 }

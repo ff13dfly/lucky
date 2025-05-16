@@ -8,7 +8,8 @@ import GeneCreate from "./create";
 function GeneOverview(props) {
     const size = {
         row: [12],
-        left:[8,4]
+        left:[8,4],
+        grid:[4],
     }
 
     let [ list, setList ] = useState([]);
@@ -23,7 +24,18 @@ function GeneOverview(props) {
         },
         fresh:async ()=>{
             Gene.list((data)=>{
+                if(data.error){
+                    return false;
+                }
                 console.log(data);
+                const arr=[];
+                for(let name in data){
+                    const row=data[name];
+                    row.name=name;
+                    arr.push(row);
+                }
+                
+                setList(arr);
             });
         }
     }
@@ -35,7 +47,13 @@ function GeneOverview(props) {
     return (
         <Row className="pt-2">
             <Col className="" sm={size.row[0]} xs={size.row[0]}>
-                <h5>Gene list here and create gene here.</h5>
+                <Row>
+                    {list.map((row, index) => (
+                        <Col className="" key={index} sm={size.grid[0]} xs={size.grid[0]}>
+                            <h4>{row.name}</h4>
+                        </Col>
+                    ))} 
+                </Row>
             </Col>
 
             <Col className="" sm={size.row[0]} xs={size.row[0]}>

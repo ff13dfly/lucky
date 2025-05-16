@@ -89,12 +89,15 @@ impl LuckCounter {
     }
 
     ///!important, only on Devnet
+    ///!important, used to set the amout of mint out token
     //FIXME, DEBUG only, need to remove when deploy on mainnet
+    
     pub fn set(&mut self, amount:u64) {
         self.value = amount
     }
 
     ///!important, only on Devnet
+    ///!important, used to set the amout of mint out token to the max
     //FIXME, DEBUG only, need to remove when deploy on mainnet
     pub fn max(&mut self) {
         self.value = LS_LUCK_MAX_AMOINT

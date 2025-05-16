@@ -2,7 +2,6 @@ import { Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import Select from 'react-select';
-import { MD5 } from "crypto-js";
 
 import Solana from "../lib/solana";
 import Gene from "../lib/gene";
@@ -176,10 +175,12 @@ function Search(props) {
                             <Col sm={size.gene[1]} xs={size.gene[1]}>
                                 <Select
                                     className="text-dark"
+                                    classNamePrefix="select"
                                     placeholder="Select gene..."
-                                    options={options}               //list of gene
+                                    options={options}
                                     disabled={frozen}
                                     defaultValue={selected}
+                                    isClearable={true}
                                     value={selected}
                                     inputValue={input}
                                     onChange={(ev)=>{
