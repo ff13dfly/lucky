@@ -15,7 +15,7 @@ function Header(props) {
         left:[4,8],
         what:[6,6],
     }
-    let [ hidden, setHidden ] = useState(true);
+    let [ hidden, setHidden ] = useState(false);
 
     const self={
         clickWhat:(ev)=>{
@@ -28,7 +28,7 @@ function Header(props) {
     const wallet = useWallet();
     useEffect(() => {
         if(wallet.publicKey!==null){
-            setHidden(wallet.publicKey.toString()!=="GTNgXEzmG2E2d9yX8fwueP4bD2WCgJ3mqvt7sQj6CYYr");
+            //setHidden(wallet.publicKey.toString()!=="GTNgXEzmG2E2d9yX8fwueP4bD2WCgJ3mqvt7sQj6CYYr");
         }
     }, [wallet.publicKey]);
     return (

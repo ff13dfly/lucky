@@ -1,6 +1,6 @@
 import { PublicKey,Connection,Keypair } from "@solana/web3.js";
 import * as anchor from "@coral-xyz/anchor";
-import IDL from "./luckysig.json";
+import IDL from "./septopus.json";
 import bs58 from "bs58";
 import config from "../config";
 

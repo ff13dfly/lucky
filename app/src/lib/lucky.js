@@ -257,6 +257,22 @@ const actions={
         return ck && ck(tx);
     },
 
+    septo_init:async (root,recipient,ck)=>{
+        const tx=await program.methods
+            .init(root,recipient)
+            .accounts({
+                payer: wallet.publicKey,
+            })
+            .rpc()
+            .catch((err) => {
+                return  ck && ck({error:`Failed to call "init".`,more:err})
+            });
+
+        Solana.onChange(wallet.publicKey,(data)=>{
+            console.log(data);
+        });
+        return ck && ck(tx);
+    },
     dev:{
         approve:()=>{
 

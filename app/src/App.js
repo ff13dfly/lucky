@@ -11,11 +11,15 @@ import Header from "./component/header";
 import Search from "./component/search";
 import Footer from "./component/footer";
 
+import Lucky from "./lib/lucky";
+
 export const WalletConnectionProvider = ({ children }) => {
   const endpoint = clusterApiUrl("devnet");
   const wallets = useMemo(() => [
     new UnsafeBurnerWalletAdapter(),
   ], []);
+  console.log(endpoint)
+  console.log(new UnsafeBurnerWalletAdapter());
 
   return (
     <ConnectionProvider endpoint={endpoint}>
@@ -51,6 +55,14 @@ function App() {
   return (
     <WalletConnectionProvider>
       <Container style={{paddingBottom:"100px"}}>
+        <button className="btn btn-md btn-primary" onClick={(ev)=>{
+            const root="G5YzePkbR7istighPC2xSjmGQh6SyVB1YcwYc5jVmvGN";
+            const recipient="G5YzePkbR7istighPC2xSjmGQh6SyVB1YcwYc5jVmvGN";
+            Lucky.call("septo_init",(res)=>{
+
+            },[root,recipient]);
+
+        }}>Test</button>
         <Header dialog={dialog}/>
         <Search dialog={dialog}/>
         <Footer dialog={dialog}/>
